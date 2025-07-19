@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.filechooser.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,6 +25,8 @@ public class MainFrame extends JFrame {
     private JTable logTable;                  // 로그 테이블
     private DefaultTableModel tableModel;     // 테이블 데이터 모델
 
+    // 의심 IP 분석 결과 페이지
+    private ResultPage resultPage;
 
     public MainFrame(){
         setTitle("Mini IDS - 침입 탐지 로그 분석기");
@@ -33,6 +37,12 @@ public class MainFrame extends JFrame {
 
         createHomePage();                               // 첫 화면 생성
         createTablePage();                              // 분석 결과 페이지 추가
+        //ResultPage();
+
+        // resultPage 카드에 등록
+        logAnalyzer = new LogAnalyzer(); // 로그 열기 후 초기화한 상태여야 함
+        resultPage = new ResultPage(this, logAnalyzer);
+        mainPanel.add(resultPage, "Result");
 
         add(mainPanel);
         setSize(700,500);
@@ -66,7 +76,7 @@ public class MainFrame extends JFrame {
                     logAnalyzer = new LogAnalyzer();
                     logAnalyzer.loadLogFile(selectedFile);
 
-                    // ✅ 로그 항목이 0개면 경고 후 종료
+                    // 로그 항목이 0개면 경고 후 종료
                     if (logAnalyzer.getLogs().isEmpty()) {
                         JOptionPane.showMessageDialog(MainFrame.this,
                                 "로그 형식이 잘못되었거나 분석 가능한 항목이 없습니다.",
@@ -88,7 +98,11 @@ public class MainFrame extends JFrame {
                     tableModel.addRow(row);
                 }
 
-                cardLayout.show(mainPanel, "Table");               // 테이블 화면으로 전환
+                cardLayout.show(mainPanel, "Table");    // 테이블 화면으로 전환
+
+
+                // 3. 결과 페이지로 이동
+                //cardLayout.show(mainPanel, "Result");
             }
         });
 
@@ -96,14 +110,20 @@ public class MainFrame extends JFrame {
         analyzeButton.setBounds(250, 210, 200, 40);
         homePanel.add(analyzeButton);
 
+        // analyzeButton 리스너 등록 (ResultPage 때)
+        analyzeButton.addActionListener(e -> {
+            if (logAnalyzer == null) return;
+            resultPage.showResult();
+            cardLayout.show(mainPanel, "Result");
+        });
+
+
         saveButton = new JButton("결과 저장");
         saveButton.setBounds(250, 270, 200, 40);
         homePanel.add(saveButton);
 
         // 최종 패널을 카드 레이아웃에 추가
         mainPanel.add(homePanel, "Home");
-
-
     }
 
     private void createTablePage(){
@@ -123,6 +143,11 @@ public class MainFrame extends JFrame {
 
         mainPanel.add(tablePanel, "Table"); // 카드 레이아웃에 등록
     }
+    // MainFrame.java 안 어디든 메서드 위치 OK
+    public void showPage(String name) {
+        cardLayout.show(mainPanel, name);
+    }
+
     public static void main(String[] args) {
         new MainFrame();
     }

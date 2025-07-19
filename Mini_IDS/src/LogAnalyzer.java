@@ -6,6 +6,24 @@ public class LogAnalyzer {
     // 로그 항목을 저장할 리스트
     private ArrayList<LogEntry> logs = new ArrayList<>();
 
+    // 추가
+    public HashMap<String, Integer> detectSuspiciousIPs() {
+        HashMap<String, Integer> map = new HashMap<>();
+
+        for (LogEntry log : logs) {
+            String ip = log.getIp();
+            String message = log.getMessage();
+
+            if (message.contains("LOGIN_FAIL") || message.contains("PORT_SCAN")) {
+                map.put(ip, map.getOrDefault(ip, 0) + 1);
+            }
+        }
+
+        map.entrySet().removeIf(entry -> entry.getValue() < 3);
+        return map;
+    }
+    // 여기까지
+
     // 로그 파일을 한 줄씩 읽어 로그 객체로 저장
     public void loadLogFile(File file) {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
