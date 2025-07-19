@@ -76,6 +76,11 @@ public class MainFrame extends JFrame {
                     logAnalyzer = new LogAnalyzer();
                     logAnalyzer.loadLogFile(selectedFile);
 
+                    // ResultPage를 다시 생성해서 logAnalyzer 갱신(두 페이지를 연결)
+                    mainPanel.remove(resultPage); // 이전 페이지 제거 (중복 방지)
+                    resultPage = new ResultPage(MainFrame.this, logAnalyzer);
+                    mainPanel.add(resultPage, "Result");
+
                     // 로그 항목이 0개면 경고 후 종료
                     if (logAnalyzer.getLogs().isEmpty()) {
                         JOptionPane.showMessageDialog(MainFrame.this,
@@ -87,6 +92,7 @@ public class MainFrame extends JFrame {
                         JOptionPane.showMessageDialog(MainFrame.this,"파일이 성공적으로 로드되었습니다!",
                                 "파일 열기",JOptionPane.INFORMATION_MESSAGE);
                     }
+
                 }
 
                 // 나중에 추가함(분석 결과 페이지 추가한 후에)
@@ -99,10 +105,6 @@ public class MainFrame extends JFrame {
                 }
 
                 cardLayout.show(mainPanel, "Table");    // 테이블 화면으로 전환
-
-
-                // 3. 결과 페이지로 이동
-                //cardLayout.show(mainPanel, "Result");
             }
         });
 
@@ -127,19 +129,28 @@ public class MainFrame extends JFrame {
     }
 
     private void createTablePage(){
-        tablePanel = new JPanel(new BorderLayout());
+        tablePanel = new JPanel(null);  // ← null layout으로 버튼 위치 지정 가능
 
         // 테이블 열 제목
         String[] columnNames = {"IP 주소", "시간", "메시지"};
         tableModel = new DefaultTableModel(columnNames, 0);
         logTable = new JTable(tableModel);
 
-        // 테이블 속성 설정
-        logTable.setFillsViewportHeight(true);
-        logTable.setEnabled(false); // 수정 불가
 
         JScrollPane scrollPane = new JScrollPane(logTable);
-        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setBounds(30, 30, 620, 300);
+        tablePanel.add(scrollPane);
+
+        // 분석 시작 버튼을 테이블 페이지에 배치
+        analyzeButton = new JButton("분석 시작");
+        analyzeButton.setBounds(250, 350, 200, 40);
+        analyzeButton.addActionListener(e -> {
+            if (logAnalyzer == null) return;
+            resultPage.showResult();
+            showPage("Result");
+        });
+        tablePanel.add(analyzeButton);
+
 
         mainPanel.add(tablePanel, "Table"); // 카드 레이아웃에 등록
     }
