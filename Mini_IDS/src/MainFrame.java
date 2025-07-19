@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.filechooser.*;
 import javax.swing.table.DefaultTableModel;
 
