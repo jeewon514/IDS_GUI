@@ -5,9 +5,7 @@ public class LogEntry {
     private String message;
 
     public LogEntry(String ip, String timestamp, String message) {
-        this.ip = ip;
-        this.timestamp = timestamp;
-        this.message = message;
+        this.ip = ip;this.timestamp = timestamp;this.message = message;
     }
 
     public String getIp() {

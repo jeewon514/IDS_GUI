@@ -30,8 +30,10 @@ public class LogAnalyzer {
         try {
             // 로그 형식: 날짜 시간 IP:주소 메시지
             // 예: 2025-07-18 14:23:51 IP:192.168.0.5 LOGIN_FAIL
-            String[] parts = line.split(" ");
-            if (parts.length >= 4) {
+            String[] parts = line.trim().split(" ");
+
+            // 조건: "날짜 시간 IP:주소 메시지" 형식임
+            if (parts.length >= 4 && parts[2].startsWith("IP:")) {
                 String date = parts[0];
                 String time = parts[1];
                 String ip = parts[2].replace("IP:", "");
@@ -39,8 +41,7 @@ public class LogAnalyzer {
 
                 return new LogEntry(ip, date + " " + time, message);
             }
-        } catch (Exception e) {
-            // 잘못된 형식 무시
+        } catch (Exception e) {           // 잘못된 형식 무시
         }
         return null;
     }
