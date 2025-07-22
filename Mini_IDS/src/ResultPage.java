@@ -27,7 +27,7 @@ public class ResultPage extends JPanel {
         backButton.addActionListener(e -> mainFrame.showPage("Table"));
         add(backButton);
 
-        saveButton = new JButton("💾 결과 저장");
+        saveButton = new JButton("결과 저장");
         saveButton.setBounds(360, 220, 140, 35);
         saveButton.addActionListener(e -> saveToFile());
         add(saveButton);
@@ -37,7 +37,7 @@ public class ResultPage extends JPanel {
         HashMap<String, Integer> suspiciousMap = logAnalyzer.detectSuspiciousIPs();
 
         if (suspiciousMap.isEmpty()) {
-            resultLabel.setText("✅ 이상 징후가 감지되지 않았습니다.");
+            resultLabel.setText("이상 징후가 감지되지 않았습니다.");
         } else {
             StringBuilder sb = new StringBuilder("<html><body>🚨 의심 IP 감지:<br>");
             for (Map.Entry<String, Integer> entry : suspiciousMap.entrySet()) {
