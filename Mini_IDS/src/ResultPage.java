@@ -39,7 +39,7 @@ public class ResultPage extends JPanel {
         if (suspiciousMap.isEmpty()) {
             resultLabel.setText("이상 징후가 감지되지 않았습니다.");
         } else {
-            StringBuilder sb = new StringBuilder("<html><body>🚨 의심 IP 감지:<br>");
+            StringBuilder sb = new StringBuilder("<html><body>의심 IP 감지:<br>");
             for (Map.Entry<String, Integer> entry : suspiciousMap.entrySet()) {
                 sb.append("- ").append(entry.getKey())
                         .append(" (").append(entry.getValue()).append("회)<br>");
@@ -61,7 +61,7 @@ public class ResultPage extends JPanel {
                 if (suspiciousMap.isEmpty()) {
                     writer.write("이상 징후가 감지되지 않았습니다.");
                 } else {
-                    writer.write("🚨 의심 IP 감지 결과\n");
+                    writer.write("의심 IP 감지 결과\n");
                     for (Map.Entry<String, Integer> entry : suspiciousMap.entrySet()) {
                         writer.write("- " + entry.getKey() + " (" + entry.getValue() + "회)\n");
                     }

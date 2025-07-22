@@ -90,7 +90,6 @@ public class MainFrame extends JFrame {
                         JOptionPane.showMessageDialog(MainFrame.this,"파일이 성공적으로 로드되었습니다!",
                                 "파일 열기",JOptionPane.INFORMATION_MESSAGE);
                     }
-
                 }
 
                 // 나중에 추가함(분석 결과 페이지 추가한 후에)

@@ -68,5 +68,6 @@ public class LogAnalyzer {
     public ArrayList<LogEntry> getLogs() {
         return logs;
     }
+
 }
 
